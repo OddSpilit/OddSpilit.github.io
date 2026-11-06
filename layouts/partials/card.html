@@ -1,0 +1,15 @@
+<a class="card rv" href="{{ .RelPermalink }}" data-cat="{{ .Params.cat }}" style="--ac:{{ .Params.accent }}">
+  <div class="top">
+    <span><span class="no"></span> <span class="ico">{{ .Params.cat }}</span></span>
+    <span class="badge{{ if eq .Params.status "open" }} open{{ end }}">{{ if eq .Params.status "open" }}OPEN{{ else }}INTERNAL{{ end }}</span>
+  </div>
+  <h3 data-scramble="{{ .Title }}">{{ .Title }}</h3>
+  <div class="zh">{{ .Params.zh }} · {{ .Params.category }}</div>
+  <p class="tl">{{ .Params.tagline }}</p>
+  <p class="pb">{{ .Params.problem }}</p>
+  <div class="meta">
+    <span><em>{{ .Params.lines }}</em> loc</span>
+    <span><em>{{ .Params.files }}</em> files</span>
+    <span class="go">open →</span>
+  </div>
+</a>

@@ -1,0 +1,22 @@
+{{ partial "head.html" . }}
+<main>
+<div class="wrap" style="padding:40px 0 0">
+  <div class="eyebrow">{{ .Title }}</div>
+  <h1 style="font-size:clamp(20px,3.6vw,28px);margin:0 0 10px;font-weight:700">$ ls ./{{ .Section }}</h1>
+  {{ with .Content }}<div class="sub">{{ . }}</div>{{ end }}
+</div>
+<section class="wrap" style="padding-top:26px">
+  <div class="plist">
+    {{ range .Pages.ByDate.Reverse }}
+    <a class="pitem rv" href="{{ .RelPermalink }}">
+      <div class="d">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟{{ with .Params.tags }} · {{ delimit . " / " }}{{ end }}</div>
+      <h3>{{ .Title }}</h3>
+      <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+    </a>
+    {{ else }}
+    <p class="sub">还没有文章。</p>
+    {{ end }}
+  </div>
+</section>
+</main>
+{{ partial "foot.html" . }}

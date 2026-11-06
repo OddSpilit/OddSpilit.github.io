@@ -1,0 +1,89 @@
+{{ partial "head.html" . }}
+{{ $sk := where site.RegularPages "Section" "skills" }}
+{{ $lines := 0 }}{{ $files := 0 }}{{ $open := 0 }}
+{{ range $sk }}{{ $lines = add $lines .Params.lines }}{{ $files = add $files .Params.files }}{{ if eq .Params.status "open" }}{{ $open = add $open 1 }}{{ end }}{{ end }}
+<main>
+
+<div class="wrap hero">
+<pre class="ascii" aria-label="wenqiaofeng">                      _           __               
+__ __ _____ _ _  __ _(_)__ _ ___ / _|___ _ _  __ _ 
+\ V  V / -_) ' \/ _` | / _` / _ \  _/ -_) ' \/ _` |
+ \_/\_/\___|_||_\__, |_\__,_\___/_| \___|_||_\__, |
+                   |_|                       |___/ </pre>
+  <div class="meta">wenqiaofeng@blog:~$ whoami<br>go backend · IM / 社交微服务 · Kitex + Hertz · PostgreSQL / Redis / Kafka</div>
+  <h1>把踩过的坑<br><span class="g">变成跑得起来的判据</span></h1>
+  <p class="lead">
+    我做 IM / 社交方向的 Go 微服务。关心的是那一类<b>编译过、单测过、<code>-race</code> 全绿、code review 也看不出来，
+    只有跑到线上才炸</b>的问题——然后把每一次的教训写成工具，让下一次不依赖我还记得。
+  </p>
+  <div class="cta">
+    <a class="btn pri" href="{{ "/skills/" | relURL }}">ls ./skills ({{ len $sk }})</a>
+    <a class="btn" href="{{ "/posts/" | relURL }}">ls ./posts</a>
+  </div>
+
+  <div class="term">
+    <div class="term-bar">~/work — 8 个会话共用一个工作区</div>
+    <div class="term-body" id="term" data-lines='[
+      ["c","mcc doctor"],
+      ["warn","!  同 cwd 活动会话: 8        ← 危险"],
+      ["o","   残留 worktree: 4 (3 个 prunable)"],
+      ["warn","!  stash 栈深度: 3          ← 有别人的 WIP，不要 pop"],
+      ["c","claude -w feat/oa-cards"],
+      ["ok","+  worktree 已创建 · HEAD 独立 · stash 栈独立"],
+      ["c","mcc task next"],
+      ["err","x  上一个任务尚未判定 — 拒绝派活 (exit 6)"]
+    ]'></div>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="stats rv">
+    <div class="stat"><b data-count="{{ len $sk }}">0</b><span>自写 Skill</span></div>
+    <div class="stat"><b data-count="{{ $lines }}">0</b><span>行说明与脚本</span></div>
+    <div class="stat"><b data-count="{{ $files }}">0</b><span>文件</span></div>
+    <div class="stat"><b data-count="16">0</b><span>个微服务的战场</span></div>
+  </div>
+</section>
+
+<section class="wrap" id="skills">
+  <div class="eyebrow rv">works</div>
+  <h2 class="h-sec rv">ls ./skills</h2>
+  <p class="sub rv">
+    Claude Code 的 Skill = 一段带触发条件的说明书 + 可执行脚本。命中场景时自动加载，
+    把「这类活该怎么干」从人的记忆搬进工具。点进任意一个看它的设计理念。
+  </p>
+
+  {{ $cats := slice }}
+  {{ range $sk }}{{ $cats = $cats | append (printf "%s|%s" .Params.cat .Params.category) }}{{ end }}
+  <div class="chips rv">
+    <button class="chip on" data-f="all">all {{ len $sk }}</button>
+    {{ range $c := ($cats | uniq) }}
+      {{ $p := split $c "|" }}
+      <button class="chip" data-f="{{ index $p 0 }}">{{ index $p 1 }}</button>
+    {{ end }}
+  </div>
+
+  <div class="cards">
+    {{ range (sort $sk "Params.weight") }}{{ partial "card.html" . }}{{ end }}
+  </div>
+</section>
+
+{{ $posts := where site.RegularPages "Section" "posts" }}
+{{ if $posts }}
+<section class="wrap">
+  <div class="eyebrow rv">writing</div>
+  <h2 class="h-sec rv">ls ./posts</h2>
+  <div class="plist" style="margin-top:20px">
+    {{ range first 5 $posts }}
+    <a class="pitem rv" href="{{ .RelPermalink }}">
+      <div class="d">{{ .Date.Format "2006-01-02" }} · {{ .ReadingTime }} 分钟</div>
+      <h3>{{ .Title }}</h3>
+      <p>{{ with .Params.summary }}{{ . }}{{ else }}{{ .Summary }}{{ end }}</p>
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+
+</main>
+{{ partial "foot.html" . }}

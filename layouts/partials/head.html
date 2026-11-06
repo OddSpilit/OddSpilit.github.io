@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Params.problem }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+<meta name="author" content="{{ site.Params.author }}">
+<meta name="keywords" content="{{ delimit site.Params.keywords "," }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<link rel="canonical" href="{{ .Permalink }}">
+{{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}">{{ end }}
+<script>(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','dark')}})();</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+{{ $css := resources.Get "css/neo.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+
+<nav class="nav"><div class="nav-in">
+  <a href="{{ "/" | relURL }}" class="brand">wenqiaofeng@blog:~$</a>
+  <span class="sp"></span>
+  <a class="nl{{ if hasPrefix .RelPermalink (("/skills/") | relURL) }} act{{ end }}" href="{{ "/skills/" | relURL }}">./skills</a>
+  <a class="nl{{ if hasPrefix .RelPermalink (("/posts/") | relURL) }} act{{ end }}" href="{{ "/posts/" | relURL }}">./posts</a>
+  <a class="nl{{ if hasPrefix .RelPermalink (("/about/") | relURL) }} act{{ end }}" href="{{ "/about/" | relURL }}">./about</a>
+  <a class="nl" href="{{ site.Params.github }}" target="_blank" rel="noopener">github ↗</a>
+  <button class="tsw" id="tsw" type="button" aria-label="切换主题">--theme=<span class="on" id="tswv">dark</span></button>
+</div></nav>
+{{ $sk := where site.RegularPages "Section" "skills" }}
+{{ $loc := 0 }}{{ range $sk }}{{ $loc = add $loc .Params.lines }}{{ end }}
+<div class="statusbar"><div class="sb-in">
+  <span class="seg"><span class="k">[0]</span> {{ if .IsHome }}~{{ else }}~/{{ .Section }}{{ if .IsPage }}/{{ .File.BaseFileName }}{{ end }}{{ end }}</span>
+  <span class="seg sb-hide"><span class="k">skills</span> {{ len $sk }}</span>
+  <span class="seg sb-hide"><span class="k">loc</span> {{ $loc }}</span>
+  <span class="sp"></span>
+  <span class="seg sb-hide"><span class="k">go</span> 1.26</span>
+  <span class="seg"><span class="k">●</span> <span class="blink">online</span></span>
+</div></div>

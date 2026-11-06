@@ -1,0 +1,45 @@
+{{ partial "head.html" . }}
+{{ $sk := where site.RegularPages "Section" "skills" }}
+{{ $lines := 0 }}{{ $open := 0 }}
+{{ range $sk }}{{ $lines = add $lines .Params.lines }}{{ if eq .Params.status "open" }}{{ $open = add $open 1 }}{{ end }}{{ end }}
+<main>
+<div class="wrap" style="padding:40px 0 0">
+  <div class="eyebrow">works · agent skills</div>
+  <h1 style="font-size:clamp(22px,4vw,32px);margin:0 0 14px;font-weight:700">$ ls -la ./skills <span style="color:var(--fg3);font-size:.6em">— {{ len $sk }} 个</span></h1>
+  <p class="sub" style="font-size:17px">
+    每一个都从一次真实的返工或事故里长出来。点进去看的不是使用说明，是<strong style="color:var(--fg)">设计理念</strong>——
+    它在解什么问题、为什么这么定、以及它挡不住什么。
+  </p>
+  <div class="stats rv" style="margin-top:26px">
+    <div class="stat"><b data-count="{{ len $sk }}">0</b><span>Skill</span></div>
+    <div class="stat"><b data-count="{{ $lines }}">0</b><span>行</span></div>
+    <div class="stat"><b data-count="{{ $open }}">0</b><span>已脱敏开源</span></div>
+    <div class="stat"><b data-count="{{ sub (len $sk) $open }}">0</b><span>内部（只讲理念）</span></div>
+  </div>
+</div>
+
+<section class="wrap" style="padding-top:30px">
+  {{ $cats := slice }}
+  {{ range $sk }}{{ $cats = $cats | append (printf "%s|%s" .Params.cat .Params.category) }}{{ end }}
+  <div class="chips">
+    <button class="chip on" data-f="all">all {{ len $sk }}</button>
+    {{ range $c := ($cats | uniq) }}{{ $p := split $c "|" }}
+      <button class="chip" data-f="{{ index $p 0 }}">{{ index $p 1 }}</button>
+    {{ end }}
+  </div>
+  <div class="cards">
+    {{ range (sort $sk "Params.weight") }}{{ partial "card.html" . }}{{ end }}
+  </div>
+
+  <div class="rv" style="margin-top:40px;padding:18px;border:1px solid var(--line);background:var(--bg2)">
+    <h3 style="margin:0 0 8px;font-size:15px;color:var(--am)"># 为什么大部分不开源</h3>
+    <p style="margin:0;color:var(--fg2);font-size:13.5px;line-height:1.9;font-family:var(--cjk),var(--mono)">
+      标 <code>INTERNAL</code> 的那些含集群地址、凭证签发方式、库表结构与分支约定——
+      本质是所在团队的环境操作手册，脱敏之后也不该公开，而且脱完就空了。
+      但<strong style="color:var(--fg)">设计理念是可以带走的</strong>：每一页的正文写的就是那部分，
+      加上一节「为什么不开源」说明被拿掉的是什么。
+    </p>
+  </div>
+</section>
+</main>
+{{ partial "foot.html" . }}

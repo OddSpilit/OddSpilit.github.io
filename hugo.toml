@@ -1,0 +1,33 @@
+baseURL = "https://oddspilit.github.io/"
+languageCode = "zh-cn"
+defaultContentLanguage = "zh"
+title = "温乔丰 · 后端工程笔记"
+enableRobotsTXT = true
+buildDrafts = false
+enableEmoji = true
+
+[pagination]
+  pagerSize = 12
+
+[minify]
+  disableXML = true
+
+[params]
+  author = "温乔丰"
+  role = "Go 后端 · IM / 社交微服务"
+  github = "https://github.com/OddSpilit"
+  description = "Go 微服务、IM 高并发系统，以及把工程经验固化成 Agent Skill 的实践。"
+  keywords = ["Go","微服务","Kitex","IM","高并发","Claude Code","Agent Skill","后端工程"]
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+    noClasses = false
+    style = "github-dark"
+    codeFences = true
+    lineNos = false
+    tabWidth = 2
+
+[outputs]
+  home = ["HTML","RSS"]

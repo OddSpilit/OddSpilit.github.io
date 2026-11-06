@@ -1,0 +1,12 @@
+<footer><div class="fin">
+  <div>© {{ now.Year }} {{ site.Params.author }} — {{ site.Params.role }}</div>
+  <div>
+    <a href="{{ site.Params.github }}" target="_blank" rel="noopener">GitHub</a> ·
+    <a href="{{ "/index.xml" | relURL }}">RSS</a> ·
+    <span>hugo + 自写主题</span>
+  </div>
+</div></footer>
+{{ $js := resources.Get "js/neo.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+</body>
+</html>
